@@ -10,7 +10,7 @@ class Analytics extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Analytics'),
+        title: const Text('Add Workout'),
       ),
       body: Center(
         child: Text('Analytics', 
