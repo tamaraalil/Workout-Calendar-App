@@ -210,10 +210,16 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              onPressed: null,
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PresetWorkout()),
+                );
+              },
               child: Text("Add workout")
             )
-          )
+          ), 
+          SizedBox(height: 20.0),
         ], 
       ),
     );

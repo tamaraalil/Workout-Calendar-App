@@ -23,6 +23,11 @@ class PresetWorkout extends StatelessWidget {
       ),
       body: Column(
         children: [
+          SizedBox(height: 20.0),
+          Container(
+            child: Text('New Workout for <Date>: ', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+          ),
+          SizedBox(height: 20.0),
           Container(
             child: Row(
               children: [
@@ -42,6 +47,7 @@ class PresetWorkout extends StatelessWidget {
               ],
             )
           ),
+          SizedBox(height: 8.0),
           Container(
             child: Row(
               children: [
@@ -58,22 +64,24 @@ class PresetWorkout extends StatelessWidget {
               ],
             )
           ),
+          SizedBox(height: 8.0),
           Container(
             child: Text("Sets")
           ),
+          SizedBox(height: 8.0),
           ExpansionTile(
             title: Text("Set 1"),
             children: <Widget> [
               TextField(obscureText: false,
                 decoration:  InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: '# sets',
+                  labelText: '# reps',
                 ),
               ),
               TextField(obscureText: false,
                 decoration:  InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: '# reps',
+                  labelText: '# weight',
                 ),
               ),
               TextField(obscureText: false,
@@ -90,13 +98,13 @@ class PresetWorkout extends StatelessWidget {
                 TextField(obscureText: false,
                   decoration:  InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: '# sets',
+                    labelText: '# reps',
                   ),
                 ),
                 TextField(obscureText: false,
                   decoration:  InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: '# reps',
+                    labelText: '# weight',
                   ),
                 ),
                 TextField(obscureText: false,
@@ -113,13 +121,13 @@ class PresetWorkout extends StatelessWidget {
                 TextField(obscureText: false,
                   decoration:  InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: '# sets',
+                    labelText: '# reps',
                   ),
                 ),
                 TextField(obscureText: false,
                   decoration:  InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: '# reps',
+                    labelText: '# weight',
                   ),
                 ),
                 TextField(obscureText: false,
@@ -130,12 +138,14 @@ class PresetWorkout extends StatelessWidget {
                 ),
               ]
           ),
+          SizedBox(height: 8.0),
           Container(
             child: ElevatedButton(
-              onPressed: null,
+              onPressed: (){},
               child: const Text("Add set"),
             )
           ),
+          SizedBox(height: 8.0),
           Container(
             child: Row(
               children: [
@@ -147,6 +157,7 @@ class PresetWorkout extends StatelessWidget {
               ],
             )
           ),
+          SizedBox(height: 8.0),
           Container(
             child: TextField(obscureText: false,
               decoration:  InputDecoration(
@@ -155,12 +166,13 @@ class PresetWorkout extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: 20.0),
           Container(
           child: ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-          onPressed: null,
-          child: Text("Add workout")
-          )
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+            onPressed: () {},
+            child: Text("Add workout")
+            )
           )
         ],
       )
