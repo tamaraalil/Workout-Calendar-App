@@ -129,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
             decoration: BoxDecoration( // Drawer title
               color: Colors.blue,
             ),
-            child: Text('\nWorkout\nCalendar', textAlign: TextAlign.center,
+            child: Text('\nFitter\nToday', textAlign: TextAlign.center,
               style: TextStyle (fontWeight: FontWeight.w700, fontSize: 30.0, color: Colors.white),),
           ),
           ListTile( // Drawer option to calendar page
@@ -207,6 +207,13 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
           ),
+          Container(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+              onPressed: null,
+              child: Text("Add workout")
+            )
+          )
         ], 
       ),
     );

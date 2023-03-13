@@ -31,7 +31,7 @@ class PresetWorkout extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    child: TextField(obscureText: true,
+                    child: TextField(obscureText: false,
                     decoration:  InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Workout Name',
@@ -64,19 +64,19 @@ class PresetWorkout extends StatelessWidget {
           ExpansionTile(
             title: Text("Set 1"),
             children: <Widget> [
-              TextField(obscureText: true,
+              TextField(obscureText: false,
                 decoration:  InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: '# sets',
                 ),
               ),
-              TextField(obscureText: true,
+              TextField(obscureText: false,
                 decoration:  InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: '# reps',
                 ),
               ),
-              TextField(obscureText: true,
+              TextField(obscureText: false,
                 decoration:  InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'notes:',
@@ -87,19 +87,19 @@ class PresetWorkout extends StatelessWidget {
           ExpansionTile(
               title: Text("Set 2"),
               children: <Widget> [
-                TextField(obscureText: true,
+                TextField(obscureText: false,
                   decoration:  InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: '# sets',
                   ),
                 ),
-                TextField(obscureText: true,
+                TextField(obscureText: false,
                   decoration:  InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: '# reps',
                   ),
                 ),
-                TextField(obscureText: true,
+                TextField(obscureText: false,
                   decoration:  InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'notes:',
@@ -110,19 +110,19 @@ class PresetWorkout extends StatelessWidget {
           ExpansionTile(
               title: Text("Set 3"),
               children: <Widget> [
-                TextField(obscureText: true,
+                TextField(obscureText: false,
                   decoration:  InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: '# sets',
                   ),
                 ),
-                TextField(obscureText: true,
+                TextField(obscureText: false,
                   decoration:  InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: '# reps',
                   ),
                 ),
-                TextField(obscureText: true,
+                TextField(obscureText: false,
                   decoration:  InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'notes:',
@@ -148,12 +148,19 @@ class PresetWorkout extends StatelessWidget {
             )
           ),
           Container(
-            child: TextField(obscureText: true,
+            child: TextField(obscureText: false,
               decoration:  InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Additional notes:',
               ),
             ),
+          ),
+          Container(
+          child: ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+          onPressed: null,
+          child: Text("Add workout")
+          )
           )
         ],
       )
