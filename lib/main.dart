@@ -147,16 +147,6 @@ class _MyHomePageState extends State<MyHomePage> {
               );
             },
           ),
-          ListTile( // Drawer option to analytics page
-            leading: Icon(Icons.assessment_outlined, color: Colors.black, size: 20.0,),
-            title: const Text('Analytics'),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Analytics()),
-              );
-            },
-          ),
         ],
       ),
       ),
