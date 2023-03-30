@@ -3,8 +3,8 @@ import '../data/workout.dart';
 
 // Add Preset Workout Page
 
-class PresetWorkout extends StatelessWidget {
-  const PresetWorkout({super.key});
+class AddExercise extends StatelessWidget {
+  const AddExercise({super.key});
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(child: Text("Push"), value: ("Push")),
@@ -19,13 +19,13 @@ class PresetWorkout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Preset Workout'),
+        title: const Text('Add Exercise'),
       ),
       body: Column(
         children: [
           SizedBox(height: 20.0),
           Container(
-            child: Text('New exercise for <Date>: ', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+            child: Text('New Exercise for <Date>: ', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
           ),
           SizedBox(height: 20.0),
           Container(
@@ -52,7 +52,7 @@ class PresetWorkout extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  child: Text("Preset exercises: ")
+                  child: Text("Preset Exercises: ")
                 ),
                 Container(
                     child: DropdownButton<String>(

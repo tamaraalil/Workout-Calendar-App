@@ -3,6 +3,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'data/utils.dart';
 import 'data/workout.dart';
 import 'pages/add_preset.dart';
+import 'pages/add_exercise.dart';
 import 'pages/analytics.dart';
 
 // Workout Calendar App
@@ -213,10 +214,10 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const PresetWorkout()),
+                  MaterialPageRoute(builder: (context) => const AddExercise()),
                 );
               },
-              child: Text("Add workout")
+              child: Text("Add exercise")
             )
           ), 
           SizedBox(height: 20.0),
