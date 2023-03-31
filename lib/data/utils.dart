@@ -1,14 +1,51 @@
 import 'dart:collection';
 import 'package:table_calendar/table_calendar.dart';
+import 'dart:convert';
+ /*
+class Sets {
+  final String reps;
+  final String weight;
+  final String notes;
+  const Sets(this.weight, this.reps, this.notes);
+
+  Map toJson() => {
+    'reps': reps,
+    'weight': weight,
+    'notes': notes,
+  };
+  factory 
+}*/
 
 /// Example event class.
 class Event {
   final String title;
 
+  /*final DateTime date;
+  final bool addToPreset;
+  final String notes;
+  final List<Sets> sets;*/
+
+  //const Event(this.title, this.date, this.addToPreset, this.notes, this.sets);
   const Event(this.title);
 
   @override
   String toString() => title;
+/*
+  Map toJson() {
+    List<Map> sets =
+      this.sets.map((i) => i.toJson()).toList();
+    return {
+      'title': title,
+      'date': date.toString(),
+      'notes': notes,
+      'sets': sets,
+      'addToPreset': addToPreset
+    };
+  }
+  factory Event.fromJson(dynamic json) {
+    var setsObjsJson = json['sets' as List];
+    List<Sets> _sets = setsObjsJson.map((setJson) => Sets.fromJson(setJson)).toList();
+  }*/
 }
 
 /// Example events.
@@ -18,6 +55,10 @@ final kEvents = LinkedHashMap<DateTime, List<Event>>(
   equals: isSameDay,
   hashCode: getHashCode,
 )..addAll(_kEventSource);
+
+var exercises = [];
+
+
 
 final _kEventSource = Map.fromIterable(List.generate(50, (index) => index),
     key: (item) => DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5),

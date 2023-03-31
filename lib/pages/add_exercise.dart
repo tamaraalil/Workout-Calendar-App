@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 import '../data/workout.dart';
+import '../data/utils.dart';
+import 'calendar.dart';
 
 // Add Preset Workout Page
 
-class AddExercise extends StatelessWidget {
-  const AddExercise({super.key});
+class AddExercise extends StatefulWidget {
+  final String focusedDay;
+  const AddExercise({Key? key, required this.focusedDay}) : super(key: key);
+
+  @override
+  State<AddExercise> createState() => _AddExerciseState();
+}
+
+class _AddExerciseState extends State<AddExercise> {
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(child: Text("Push"), value: ("Push")),
@@ -15,6 +25,11 @@ class AddExercise extends StatelessWidget {
   }
   final String selectedValue = "Legs";
   final bool isChecked = false;
+  final nameController = TextEditingController();
+  final notesController = TextEditingController();
+  final textController = TextEditingController();
+  final detailsContoller = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +40,7 @@ class AddExercise extends StatelessWidget {
         children: [
           SizedBox(height: 20.0),
           Container(
-            child: Text('New Exercise for <Date>: ', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
+            child: Text('New Exercise for ' + widget.focusedDay.replaceAll("00:00:00.000Z", ""), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold))
           ),
           SizedBox(height: 20.0),
           Container(
@@ -36,7 +51,8 @@ class AddExercise extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    child: TextField(obscureText: false,
+                    child: TextFormField(obscureText: false,
+                    controller: nameController,
                     decoration:  InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Exercise Name',
@@ -66,25 +82,26 @@ class AddExercise extends StatelessWidget {
           ),
           SizedBox(height: 8.0),
           Container(
-            child: Text("Sets")
+            child: Text("Excercise Sets")
           ),
+          
           SizedBox(height: 8.0),
           ExpansionTile(
-            title: Text("Set 1"),
+            title: Text("Set info"),
             children: <Widget> [
-              TextField(obscureText: false,
+              TextFormField(obscureText: false,
                 decoration:  InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: '# reps',
                 ),
               ),
-              TextField(obscureText: false,
+              TextFormField(obscureText: false,
                 decoration:  InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: '# weight',
                 ),
               ),
-              TextField(obscureText: false,
+              TextFormField(obscureText: false,
                 decoration:  InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'notes:',
@@ -92,56 +109,45 @@ class AddExercise extends StatelessWidget {
               ),
             ]
           ),
-          ExpansionTile(
-              title: Text("Set 2"),
-              children: <Widget> [
-                TextField(obscureText: false,
-                  decoration:  InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: '# reps',
-                  ),
-                ),
-                TextField(obscureText: false,
-                  decoration:  InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: '# weight',
-                  ),
-                ),
-                TextField(obscureText: false,
-                  decoration:  InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'notes:',
-                  ),
-                ),
-              ]
-          ),
-          ExpansionTile(
-              title: Text("Set 3"),
-              children: <Widget> [
-                TextField(obscureText: false,
-                  decoration:  InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: '# reps',
-                  ),
-                ),
-                TextField(obscureText: false,
-                  decoration:  InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: '# weight',
-                  ),
-                ),
-                TextField(obscureText: false,
-                  decoration:  InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'notes:',
-                  ),
-                ),
-              ]
-          ),
           SizedBox(height: 8.0),
           Container(
             child: ElevatedButton(
-              onPressed: (){},
+              onPressed: (){
+               // SizedBox(height: 8.0),
+                child: Container(
+              //  width: minSize,
+                child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    return ExpansionTile(
+                      title: Text("Set $index"),
+                      children: <Widget> [
+                        TextFormField(obscureText: false,
+                          controller: textController,
+                          decoration:  InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: '# reps',
+                          ),
+                        ),
+                        TextFormField(obscureText: false,
+                        controller: textController,
+                          decoration:  InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: '# weight',
+                          ),
+                        ),
+                        TextFormField(obscureText: false,
+                        controller: textController,
+                          decoration:  InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'notes:',
+                          ),
+                        ),
+                      ]
+                    );
+                  },
+                ),
+              );
+              },
               child: const Text("Add set"),
             )
           ),
@@ -159,7 +165,8 @@ class AddExercise extends StatelessWidget {
           ),
           SizedBox(height: 8.0),
           Container(
-            child: TextField(obscureText: false,
+            child: TextFormField(obscureText: false,
+              controller: notesController,
               decoration:  InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Additional notes:',
@@ -170,7 +177,18 @@ class AddExercise extends StatelessWidget {
           Container(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    // Retrieve the text that the user has entered by using the
+                    // TextEditingController.
+                    content: Text(nameController.text),
+                  );
+                },
+              );
+            },
             child: Text("Add exercise")
             )
           )
@@ -178,4 +196,7 @@ class AddExercise extends StatelessWidget {
       )
     );
   }
+
 }
+
+//class _writeExcercise 

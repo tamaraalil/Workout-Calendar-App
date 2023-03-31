@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
         _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
+        focusedDay = focusedDay;
         _rangeStart = null; // Important to clean those
         _rangeEnd = null;
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
     setState(() {
       _selectedDay = null;
-      _focusedDay = focusedDay;
+      focusedDay = focusedDay;
       _rangeStart = start;
       _rangeEnd = end;
       _rangeSelectionMode = RangeSelectionMode.toggledOn;
@@ -159,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
               }
             },
             onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
+              focusedDay = focusedDay;
             },
           ), 
           const SizedBox(height: 8.0),
@@ -195,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const AddExercise()),
+                  MaterialPageRoute(builder: (context) => AddExercise(focusedDay: _selectedDay.toString())),
                 );
               },
               child: Text("Add exercise")
