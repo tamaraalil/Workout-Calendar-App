@@ -3,6 +3,8 @@ import 'package:table_calendar/table_calendar.dart';
 import '../data/workout.dart';
 import '../data/utils.dart';
 import 'calendar.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
 
 // Add Preset Workout Page
 
@@ -15,6 +17,15 @@ class AddExercise extends StatefulWidget {
 }
 
 class _AddExerciseState extends State<AddExercise> {
+  String jsonString = "";
+  Future<void> readJson() async {
+    final String response = await rootBundle.loadString("assets/exercises.json");
+    final data = await json.decode(response);
+    setState(() {
+      jsonString = response;
+    });
+  }
+
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(child: Text("Push"), value: ("Push")),
@@ -188,6 +199,8 @@ class _AddExerciseState extends State<AddExercise> {
                   );
                 },
               );
+              readJson();
+              _writeExcercise(jsonString);
             },
             child: Text("Add exercise")
             )
@@ -199,4 +212,13 @@ class _AddExerciseState extends State<AddExercise> {
 
 }
 
-//class _writeExcercise 
+_writeExcercise(String text) {
+  print(text);
+  if(text.isNotEmpty) {
+    var exercises = jsonDecode(text)['exercises'] as List;
+    var exerciseObjs = exercises.map((i) => Event.fromJson(i)).toList();
+    print(exerciseObjs.toString());
+  } else {
+    print("problemo");
+  }
+} 

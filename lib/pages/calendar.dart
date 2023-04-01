@@ -5,6 +5,8 @@ import '../data/workout.dart';
 import 'add_preset.dart';
 import 'add_exercise.dart';
 import 'analytics.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
 
 // Workout Calendar App
 // Group 10
@@ -18,6 +20,14 @@ class MyHomePage extends StatefulWidget {
 
 
 class _MyHomePageState extends State<MyHomePage> {
+  String jsonString = "";
+  Future<void> readJson() async {
+    final String response = await rootBundle.loadString("assets/exercises.json");
+    final data = await json.decode(response);
+    setState(() {
+      jsonString = response;
+    });
+  }
   bool initialStatus=false;
   // Calendar Variables
   late final ValueNotifier<List<Event>> _selectedEvents;
@@ -54,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Event> _getEventsForDay(DateTime day) {
     // Implementation example
     return kEvents[day] ?? [];
+    //return [];
   }
 
   List<Event> _getEventsForRange(DateTime start, DateTime end) {
@@ -207,3 +218,16 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+List<Event> _writeExcercise(String text) {
+  print(text);
+  if(text.isNotEmpty) {
+    var exercises = jsonDecode(text)['exercises'] as List;
+    var exerciseObjs = exercises.map((i) => Event.fromJson(i)).toList();
+    print(exerciseObjs.toString());
+    return exerciseObjs;
+  } else {
+    print("problemo");
+    return List.empty();
+  }
+} 
