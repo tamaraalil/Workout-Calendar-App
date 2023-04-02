@@ -199,8 +199,8 @@ class _AddExerciseState extends State<AddExercise> {
                   );
                 },
               );
-              readJson();
-              _writeExcercise(jsonString);
+              //readJson();
+              //_writeExcercise();
             },
             child: Text("Add exercise")
             )
@@ -212,13 +212,29 @@ class _AddExerciseState extends State<AddExercise> {
 
 }
 
-_writeExcercise(String text) {
+/*_writeExcercise(String text) {
   print(text);
   if(text.isNotEmpty) {
     var exercises = jsonDecode(text)['exercises'] as List;
     var exerciseObjs = exercises.map((i) => Event.fromJson(i)).toList();
     print(exerciseObjs.toString());
   } else {
+    print("problemo 2");
+  }
+} */
+
+_writeExcercise() {
+  String response = rootBundle.loadString("assets/exercises.json") as String;
+  //final data = json.decode(response);
+  print("meow");
+  print(response);
+  if(response.isNotEmpty) {
+    var exercises = jsonDecode(response)['exercises'] as List;
+    List<Event> exerciseObjs = exercises.map((i) => Event.fromJson(i)).toList();
+    print(exerciseObjs.toString());
+    return exerciseObjs;
+  } else {
     print("problemo");
+    return List.empty();
   }
 } 

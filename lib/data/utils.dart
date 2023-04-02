@@ -66,21 +66,26 @@ class Event {
 }
 String jsonString = "";
 
-Future<void> readJson() async {
+Future<String> readJson() async {
   final String response = await rootBundle.loadString("assets/exercises.json");
-  final data = await json.decode(response);
-    jsonString = response;
+  //final data = await json.decode(response);
+  return response; //jsonString = response;
 }
 /// Example events.
 ///
 /// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
-final kEvents = LinkedHashMap<DateTime, List<Event>>(
+/*final kEvents = LinkedHashMap<DateTime, List<Event>>(
   equals: isSameDay,
   hashCode: getHashCode,
-)..addAll(_kEventSource);
+);..addAll(_kEventSource)*/
 
+String text = readJson().then((String result){
+      jsonString = result;
+}) as String;
 
-List<Event> exercises = _writeExcercise(jsonString);
+List<Event> exercises = _writeExcercise(text);
+
+final kEvents = createEvents(exercises);
 
 //var exercises = jsonDecode(text)['exercises'] as List;
 //final _kEventSource = _writeExcercise()
@@ -134,7 +139,22 @@ List<Event> _writeExcercise(String text) {
     print(exerciseObjs.toString());
     return exerciseObjs;
   } else {
-    print("problemo");
+    print("problemo1");
     return List.empty();
   }
 } 
+
+LinkedHashMap<DateTime, List<Event>> createEvents(List<Event> exercises) {
+  var events = LinkedHashMap<DateTime, List<Event>>();
+  for (var exercise in exercises) {
+    var currDate = DateTime.parse(exercise.date);
+    if (events.containsKey(currDate)) {
+      events[currDate]?.add(exercise);
+    } else {
+      List<Event> newList = [exercise];
+      events[currDate] = newList;
+    }
+  };
+
+  return events;
+}

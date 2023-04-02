@@ -12,22 +12,66 @@ import 'package:flutter/services.dart';
 // Group 10
 
 class MyHomePage extends StatefulWidget {
+  
   const MyHomePage({super.key, required this.title});
   final String title;
+  /*Future<String> readJson2() async {
+    final String response = await rootBundle.loadString("assets/exercises.json");
+    //final data = await json.decode(response);
+   
+    return response;
+  }*/
+  
   @override
+  
   State<MyHomePage> createState() => _MyHomePageState();
+
 }
 
 
+Future<String> readJson3() async {
+  final String response = await rootBundle.loadString("assets/exercises.json");
+  print(response);
+  return response;
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   String jsonString = "";
+  
+  Future<String> readJson4() async {
+    final String response = await rootBundle.loadString("assets/exercises.json");
+    //print(response);
+    return response;
+  }
+
   Future<void> readJson() async {
     final String response = await rootBundle.loadString("assets/exercises.json");
     final data = await json.decode(response);
     setState(() {
       jsonString = response;
     });
+
+   /* @override
+    Widget build(BuildContext context) {
+    return DefaultTextStyle(
+      
+      child: FutureBuilder<String>(
+        future: readJson4, // a previously-obtained Future<String> or null
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+           
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: children,
+            ),
+          );
+        },
+      ),
+    );
+  }*/
+
   }
+
   bool initialStatus=false;
   // Calendar Variables
   late final ValueNotifier<List<Event>> _selectedEvents;
@@ -56,7 +100,16 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-
+    //jsonString = readJson3() as String;
+    /*setState(() {
+      jsonString = data;
+    });*/
+    readJson4().then((String result){
+    setState(() {
+          jsonString = result;
+        });
+    });
+    print(jsonString);
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
@@ -227,7 +280,7 @@ List<Event> _writeExcercise(String text) {
     print(exerciseObjs.toString());
     return exerciseObjs;
   } else {
-    print("problemo");
+    print("problemo 2");
     return List.empty();
   }
 } 
