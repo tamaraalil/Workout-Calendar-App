@@ -224,7 +224,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       child: ListTile(
                         //onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]}'),
+                        title: Text('${value[index].title}'),
                       ),
                     );
                   },
