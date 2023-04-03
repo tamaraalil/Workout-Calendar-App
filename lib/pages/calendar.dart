@@ -4,27 +4,32 @@ import '../data/utils.dart';
 import '../data/workout.dart';
 import 'add_preset.dart';
 import 'add_exercise.dart';
-import 'analytics.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'dart:collection';
 
 // Workout Calendar App
 // Group 10
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+final List<Event> workout_list = ExWorkouts.workout_list;
+final List<Event> preset_workouts = ExWorkouts.preset_workouts;
 
+class MyHomePage extends StatefulWidget {
+  //const MyHomePage({super.key, required this.title});
+  const MyHomePage({
+    this.event,
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+  final String title;
+  final Event? event;
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
   //Map <DateTime, List<Event>> exercises;
   final List<Event> workout_list = ExWorkouts.workout_list;
   String jsonString = "";
-
   bool initialStatus = false;
   // Calendar Variables
   //LinkedHashMap<DateTime, List<Event>> exercises = _getEventsForDay(_selectedDay);
@@ -49,7 +54,6 @@ class _MyHomePageState extends State<MyHomePage> {
       hashCode: getHashCode,
     );
     _events.addAll(eventList);
-
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
@@ -131,13 +135,16 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: Drawer(
         child: ListView(
           children: [
-            const DrawerHeader(
+            DrawerHeader(
               decoration: BoxDecoration(
                   // Drawer title
                   color: Colors.blue,
                   image: DecorationImage(
-                      image: AssetImage("assets/gym.png"), fit: BoxFit.cover)),
-              child: Text(
+                      image: const AssetImage("assets/gym.png"),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.7), BlendMode.colorBurn))),
+              child: const Text(
                 '\nFitter\nToday',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -214,19 +221,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemCount: value.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: ListTile(
-                        //onTap: () => print('${value[index]}'),
-                        title: Text('${value[index].title}'),
-                      ),
-                    );
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 12.0,
+                          vertical: 4.0,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: ExpansionTile(
+                            //onTap: () => print('${value[index]}'),
+                            title: Text('${value[index].title}'),
+                            children: _createSets(value[index])));
                   },
                 );
               },
@@ -242,6 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           builder: (context) =>
                               AddExercise(focusedDay: _selectedDay.toString())),
                     );
+                    setState(() {});
                   },
                   child: Text("Add exercise"))),
           SizedBox(height: 20.0),
@@ -263,3 +270,20 @@ class _MyHomePageState extends State<MyHomePage> {
     return List.empty();
   }
 } */
+
+addEvent(Event event){
+  workout_list.add(event);
+}
+
+List<ExpansionTile> _createSets(Event value) {
+  List<ExpansionTile> list = [];
+  for (int i = 0; i < value.sets.length; i++) {
+    list.add(ExpansionTile(title: Text("Set ${i + 1}"), children: <Widget>[
+      ListTile(
+          title: Text(
+              "Reps: ${value.sets[i].reps} Weight: ${value.sets[i].weight}"),
+          subtitle: Text("Notes: ${value.sets[i].notes}"))
+    ]));
+  }
+  return list;
+}

@@ -2,8 +2,8 @@ import 'dart:collection';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
- 
-class Sets {
+
+/*class Sets {
   final String reps;
   final String weight;
   final String notes;
@@ -36,13 +36,11 @@ class Event2 {
   const Event2(this.title, this.date, this.notes, this.sets, this.addToPreset);
   //const Event(this.title);
 
-
   @override
   String toString() => title;
 
   Map toJson() {
-    List<Map> sets =
-      this.sets.map((i) => i.toJson()).toList();
+    List<Map> sets = this.sets.map((i) => i.toJson()).toList();
     return {
       'title': title,
       'date': date.toString(),
@@ -51,9 +49,11 @@ class Event2 {
       'addToPreset': addToPreset
     };
   }
+
   factory Event2.fromJson(dynamic json) {
     var setsObjsJson = json['sets'] as List;
-    List<Sets> _sets = setsObjsJson.map((setJson) => Sets.fromJson(setJson)).toList();
+    List<Sets> _sets =
+        setsObjsJson.map((setJson) => Sets.fromJson(setJson)).toList();
 
     return Event2(
       json['title'] as String,
@@ -63,7 +63,7 @@ class Event2 {
       json['addToPreset'] as bool,
     );
   }
-}
+}*/
 String jsonString = "";
 
 Future<String> readJson() async {
@@ -71,6 +71,7 @@ Future<String> readJson() async {
   //final data = await json.decode(response);
   return response; //jsonString = response;
 }
+
 /// Example events.
 ///
 /// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
@@ -79,11 +80,11 @@ Future<String> readJson() async {
   hashCode: getHashCode,
 );..addAll(_kEventSource)*/
 
-String text = readJson().then((String result){
-      jsonString = result;
+String text = readJson().then((String result) {
+  jsonString = result;
 }) as String;
 
-List<Event2> exercises = _writeExcercise(text);
+//List<Event2> exercises = _writeExcercise(text);
 
 //final kEvents = createEvents(exercises);
 
@@ -101,13 +102,12 @@ List<Event2> exercises = _writeExcercise(text);
     ],
   });*/
 // List.generate(
-     //  item % 4 + 1, (index) => exercises[index]));
+//  item % 4 + 1, (index) => exercises[index]));
 
-final _kEventSource = Map.fromIterable(List.generate(50, (index) => index),
+/*final _kEventSource = Map.fromIterable(List.generate(50, (index) => index),
     key: (item) => DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5),
-    value: (item) => List.generate(
-        item % 4 + 1, (index) => exercises[index]));
-  /*..addAll({
+    value: (item) => List.generate(item % 4 + 1, (index) => exercises[index]));*/
+/*..addAll({
     /*kToday: [
       Event('Today\'s Push'),
       Event('Today\'s Abs and core'),
@@ -131,18 +131,19 @@ final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
 final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
 
-List<Event2> _writeExcercise(String text) {
+/*List<Event2> _writeExcercise(String text) {
   print(text);
-  if(text.isNotEmpty) {
+  if (text.isNotEmpty) {
     var exercises = jsonDecode(text)['exercises'] as List;
-    List<Event2> exerciseObjs = exercises.map((i) => Event2.fromJson(i)).toList();
+    List<Event2> exerciseObjs =
+        exercises.map((i) => Event2.fromJson(i)).toList();
     print(exerciseObjs.toString());
     return exerciseObjs;
   } else {
     print("problemo1");
     return List.empty();
   }
-} 
+} */
 
 /*LinkedHashMap<DateTime, List<Event>> createEvents(List<Event> exercises) {
   var events = LinkedHashMap<DateTime, List<Event>>();
