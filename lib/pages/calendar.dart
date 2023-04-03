@@ -15,26 +15,23 @@ import 'dart:collection';
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
-  
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
-
-
 
 class _MyHomePageState extends State<MyHomePage> {
   //Map <DateTime, List<Event>> exercises;
   final List<Event> workout_list = ExWorkouts.workout_list;
   String jsonString = "";
 
-  bool initialStatus=false;
+  bool initialStatus = false;
   // Calendar Variables
   //LinkedHashMap<DateTime, List<Event>> exercises = _getEventsForDay(_selectedDay);
 
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
-      .toggledOff; // Can
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff; // Can
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
@@ -46,39 +43,39 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     //exercises = {};
     super.initState();
+    var eventList = createEvents(workout_list);
     _events = LinkedHashMap(
       equals: isSameDay,
       hashCode: getHashCode,
     );
+    _events.addAll(eventList);
 
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
-
   LinkedHashMap<DateTime, List<Event>> createEvents(List<Event> exercises) {
-    LinkedHashMap<DateTime, List<Event>> events = LinkedHashMap<DateTime, List<Event>>();
+    LinkedHashMap<DateTime, List<Event>> events =
+        LinkedHashMap<DateTime, List<Event>>();
     for (Event exercise in exercises) {
       //print(exercise.date);
       DateTime currDate = DateTime.parse(exercise.date);
       if (events.containsKey(currDate)) {
         //print("in if cur date");
         events[currDate]?.add(exercise);
-        
       } else {
-       // print("in else");                                                                                                                            
+        // print("in else");
         List<Event> newList = [exercise];
         events[currDate] = newList;
-        
       }
-    };
+    }
+    ;
     //print(events);
     return events;
   }
-  
 
   List<Event> _getEventsForDay(DateTime day) {
-   // LinkedHashMap<DateTime, List<Event>> exercises = createEvents(workout_list);
+    // LinkedHashMap<DateTime, List<Event>> exercises = createEvents(workout_list);
     return _events[day] ?? [];
     //return _events[day] ?? [];
   }
@@ -133,33 +130,52 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       drawer: Drawer(
         child: ListView(
-        children: [
-          const DrawerHeader(
-            decoration: BoxDecoration( // Drawer title
-              color: Colors.blue,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                  // Drawer title
+                  color: Colors.blue,
+                  image: DecorationImage(
+                      image: AssetImage("assets/gym.png"), fit: BoxFit.cover)),
+              child: Text(
+                '\nFitter\nToday',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 30.0,
+                    color: Colors.white),
+              ),
             ),
-            child: Text('\nFitter\nToday', textAlign: TextAlign.center,
-              style: TextStyle (fontWeight: FontWeight.w700, fontSize: 30.0, color: Colors.white),),
-          ),
-          ListTile( // Drawer option to calendar page
-            leading: Icon(Icons.calendar_month, color: Colors.black, size: 20.0,),
-            title: const Text('Calendar'),
-            onTap: () {}, // fix this???? mayhaps?
-          ),
-          ListTile( // Drawer option to add preset workout page
-            leading: Icon(Icons.add_circle_outline, color: Colors.black, size: 20.0,),
-            title: const Text('Add Preset Workout'),
-            onTap: () {
-              Navigator.push(
+            ListTile(
+              // Drawer option to calendar page
+              leading: Icon(
+                Icons.calendar_month,
+                color: Colors.black,
+                size: 20.0,
+              ),
+              title: const Text('Calendar'),
+              onTap: () {}, // fix this???? mayhaps?
+            ),
+            ListTile(
+              // Drawer option to add preset workout page
+              leading: Icon(
+                Icons.add_circle_outline,
+                color: Colors.black,
+                size: 20.0,
+              ),
+              title: const Text('Add Preset Workout'),
+              onTap: () {
+                Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const PresetWorkout()),
-              );
-            },
-          ),
-        ],
+                  MaterialPageRoute(
+                      builder: (context) => const PresetWorkout()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
-      ),
-      body: Column (
+      body: Column(
         children: [
           TableCalendar(
             firstDay: kFirstDay,
@@ -188,7 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onPageChanged: (focusedDay) {
               focusedDay = focusedDay;
             },
-          ), 
+          ),
           const SizedBox(height: 8.0),
           Expanded(
             child: ValueListenableBuilder<List<Event>>(
@@ -217,19 +233,19 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Container(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddExercise(focusedDay: _selectedDay.toString())),
-                );
-              },
-              child: Text("Add exercise")
-            )
-          ), 
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              AddExercise(focusedDay: _selectedDay.toString())),
+                    );
+                  },
+                  child: Text("Add exercise"))),
           SizedBox(height: 20.0),
-        ], 
+        ],
       ),
     );
   }
