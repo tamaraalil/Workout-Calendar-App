@@ -7,73 +7,30 @@ import 'add_exercise.dart';
 import 'analytics.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'dart:collection';
 
 // Workout Calendar App
 // Group 10
 
 class MyHomePage extends StatefulWidget {
-  
   const MyHomePage({super.key, required this.title});
   final String title;
-  /*Future<String> readJson2() async {
-    final String response = await rootBundle.loadString("assets/exercises.json");
-    //final data = await json.decode(response);
-   
-    return response;
-  }*/
   
   @override
-  
   State<MyHomePage> createState() => _MyHomePageState();
-
 }
 
 
-Future<String> readJson3() async {
-  final String response = await rootBundle.loadString("assets/exercises.json");
-  print(response);
-  return response;
-}
 
 class _MyHomePageState extends State<MyHomePage> {
+  //Map <DateTime, List<Event>> exercises;
+  final List<Event> workout_list = ExWorkouts.workout_list;
   String jsonString = "";
-  
-  Future<String> readJson4() async {
-    final String response = await rootBundle.loadString("assets/exercises.json");
-    //print(response);
-    return response;
-  }
-
-  Future<void> readJson() async {
-    final String response = await rootBundle.loadString("assets/exercises.json");
-    final data = await json.decode(response);
-    setState(() {
-      jsonString = response;
-    });
-
-   /* @override
-    Widget build(BuildContext context) {
-    return DefaultTextStyle(
-      
-      child: FutureBuilder<String>(
-        future: readJson4, // a previously-obtained Future<String> or null
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-           
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: children,
-            ),
-          );
-        },
-      ),
-    );
-  }*/
-
-  }
 
   bool initialStatus=false;
   // Calendar Variables
+  //LinkedHashMap<DateTime, List<Event>> exercises = _getEventsForDay(_selectedDay);
+
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
@@ -82,42 +39,48 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
-
-  // Example data of a workout for now
-  List<Workout> workoutList = [
-    Workout.items(
-      title: 'pushups',
-      date: 'March 9th, 2023',
-      sets:  [],
-      reps: 0,
-      weight: 0,
-      addToPreset: false,
-      notes: "gabagool",
-    ),
-  ];
+  late Map<DateTime, List<Event>> _events;
 
   // Calendar Functions
   @override
   void initState() {
+    //exercises = {};
     super.initState();
-    //jsonString = readJson3() as String;
-    /*setState(() {
-      jsonString = data;
-    });*/
-    readJson4().then((String result){
-    setState(() {
-          jsonString = result;
-        });
-    });
-    print(jsonString);
+    _events = LinkedHashMap(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    );
+
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
+
+  LinkedHashMap<DateTime, List<Event>> createEvents(List<Event> exercises) {
+    LinkedHashMap<DateTime, List<Event>> events = LinkedHashMap<DateTime, List<Event>>();
+    for (Event exercise in exercises) {
+      //print(exercise.date);
+      DateTime currDate = DateTime.parse(exercise.date);
+      if (events.containsKey(currDate)) {
+        //print("in if cur date");
+        events[currDate]?.add(exercise);
+        
+      } else {
+       // print("in else");                                                                                                                            
+        List<Event> newList = [exercise];
+        events[currDate] = newList;
+        
+      }
+    };
+    //print(events);
+    return events;
+  }
+  
+
   List<Event> _getEventsForDay(DateTime day) {
-    // Implementation example
-    return kEvents[day] ?? [];
-    //return [];
+   // LinkedHashMap<DateTime, List<Event>> exercises = createEvents(workout_list);
+    return _events[day] ?? [];
+    //return _events[day] ?? [];
   }
 
   List<Event> _getEventsForRange(DateTime start, DateTime end) {
@@ -272,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-List<Event> _writeExcercise(String text) {
+/*List<Event> _writeExcercise(String text) {
   print(text);
   if(text.isNotEmpty) {
     var exercises = jsonDecode(text)['exercises'] as List;
@@ -283,4 +246,4 @@ List<Event> _writeExcercise(String text) {
     print("problemo 2");
     return List.empty();
   }
-} 
+} */

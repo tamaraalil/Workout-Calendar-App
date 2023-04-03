@@ -223,7 +223,7 @@ class _AddExerciseState extends State<AddExercise> {
   }
 } */
 
-_writeExcercise() {
+/*_writeExcercise() {
   String response = rootBundle.loadString("assets/exercises.json") as String;
   //final data = json.decode(response);
   print("meow");
@@ -237,4 +237,4 @@ _writeExcercise() {
     print("problemo");
     return List.empty();
   }
-} 
+} */

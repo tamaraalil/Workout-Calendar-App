@@ -25,7 +25,7 @@ class Sets {
 }
 
 /// Example event class.
-class Event {
+class Event2 {
   final String title;
 
   final String date;
@@ -33,7 +33,7 @@ class Event {
   final String notes;
   final List<Sets> sets;
 
-  const Event(this.title, this.date, this.notes, this.sets, this.addToPreset);
+  const Event2(this.title, this.date, this.notes, this.sets, this.addToPreset);
   //const Event(this.title);
 
 
@@ -51,11 +51,11 @@ class Event {
       'addToPreset': addToPreset
     };
   }
-  factory Event.fromJson(dynamic json) {
+  factory Event2.fromJson(dynamic json) {
     var setsObjsJson = json['sets'] as List;
     List<Sets> _sets = setsObjsJson.map((setJson) => Sets.fromJson(setJson)).toList();
 
-    return Event(
+    return Event2(
       json['title'] as String,
       json['date'] as String,
       json['notes'] as String,
@@ -83,9 +83,9 @@ String text = readJson().then((String result){
       jsonString = result;
 }) as String;
 
-List<Event> exercises = _writeExcercise(text);
+List<Event2> exercises = _writeExcercise(text);
 
-final kEvents = createEvents(exercises);
+//final kEvents = createEvents(exercises);
 
 //var exercises = jsonDecode(text)['exercises'] as List;
 //final _kEventSource = _writeExcercise()
@@ -131,11 +131,11 @@ final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
 final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
 
-List<Event> _writeExcercise(String text) {
+List<Event2> _writeExcercise(String text) {
   print(text);
   if(text.isNotEmpty) {
     var exercises = jsonDecode(text)['exercises'] as List;
-    List<Event> exerciseObjs = exercises.map((i) => Event.fromJson(i)).toList();
+    List<Event2> exerciseObjs = exercises.map((i) => Event2.fromJson(i)).toList();
     print(exerciseObjs.toString());
     return exerciseObjs;
   } else {
@@ -144,7 +144,7 @@ List<Event> _writeExcercise(String text) {
   }
 } 
 
-LinkedHashMap<DateTime, List<Event>> createEvents(List<Event> exercises) {
+/*LinkedHashMap<DateTime, List<Event>> createEvents(List<Event> exercises) {
   var events = LinkedHashMap<DateTime, List<Event>>();
   for (var exercise in exercises) {
     var currDate = DateTime.parse(exercise.date);
@@ -157,4 +157,4 @@ LinkedHashMap<DateTime, List<Event>> createEvents(List<Event> exercises) {
   };
 
   return events;
-}
+}*/
