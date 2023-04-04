@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:milestone2/pages/view_presets.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../data/utils.dart';
 import '../data/workout.dart';
 import 'add_preset.dart';
 import 'add_exercise.dart';
+import 'view_presets.dart';
 import 'dart:collection';
 
 // Workout Calendar App
 // Group 10
 
 final List<Event> workout_list = ExWorkouts.workout_list;
-final List<Event> preset_workouts = ExWorkouts.preset_workouts;
+//inal List<Event> presetdummy = ExWorkouts.preset_workouts;
+Map<String, List<Event>> _preset_workouts = <String, List<Event>>{};
+List<String> saved_presets = <String>[];
+late Map<DateTime, List<Event>> _events;
 
 class MyHomePage extends StatefulWidget {
   //const MyHomePage({super.key, required this.title});
@@ -29,8 +34,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   //Map <DateTime, List<Event>> exercises;
   final List<Event> workout_list = ExWorkouts.workout_list;
+  final List<Event> presetdummy = ExWorkouts.preset_workouts;
   String jsonString = "";
   bool initialStatus = false;
+  Event? selectedValue;
+  String? selectedPreset;
   // Calendar Variables
   //LinkedHashMap<DateTime, List<Event>> exercises = _getEventsForDay(_selectedDay);
 
@@ -42,13 +50,22 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
   late Map<DateTime, List<Event>> _events;
+  //late Map<String, List<Event>> _preset_workouts;
+  //Map<String, List<Event>> _preset_workouts = <String, List<Event>>{};
 
   // Calendar Functions
   @override
   void initState() {
     //exercises = {};
     super.initState();
+    //key: uniqueKey();
     var eventList = createEvents(workout_list);
+    //var preset
+    /*_preset_workouts = LinkedHashMap(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    );*/
+    //_preset_workouts = <String, List<Event>>{};
     _events = LinkedHashMap(
       equals: isSameDay,
       hashCode: getHashCode,
@@ -72,20 +89,35 @@ class _MyHomePageState extends State<MyHomePage> {
         List<Event> newList = [exercise];
         events[currDate] = newList;
       }
-    }
-    ;
+    };
     //print(events);
     return events;
   }
 
+  /*LinkedHashMap<DateTime, List<Event>> createPresets(List<Event> exercises) {
+    LinkedHashMap<String, List<Event>> events =
+        LinkedHashMap<String, List<Event>>();
+    for (Event exercise in exercises) {
+      //print(exercise.date);
+      DateTime currDate = DateTime.parse(exercise.date);
+      if (events.containsKey(currDate)) {
+        //print("in if cur date");
+        events[currDate]?.add(exercise);
+      } else {
+        // print("in else");
+        List<Event> newList = [exercise];
+        events[currDate] = newList;
+      }
+    };
+    //print(events);
+    return events;
+  }*/
+
   List<Event> _getEventsForDay(DateTime day) {
-    // LinkedHashMap<DateTime, List<Event>> exercises = createEvents(workout_list);
     return _events[day] ?? [];
-    //return _events[day] ?? [];
   }
 
   List<Event> _getEventsForRange(DateTime start, DateTime end) {
-    // Implementation example
     final days = daysInRange(start, end);
 
     return [
@@ -98,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         _selectedDay = selectedDay;
         focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
+        _rangeStart = null;
         _rangeEnd = null;
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
@@ -130,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
         title: Text(widget.title),
       ),
       drawer: Drawer(
@@ -138,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
             DrawerHeader(
               decoration: BoxDecoration(
                   // Drawer title
-                  color: Colors.blue,
+                  color: Colors.deepPurple,
                   image: DecorationImage(
                       image: const AssetImage("assets/gym.png"),
                       fit: BoxFit.cover,
@@ -175,7 +208,23 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const PresetWorkout()),
+                      builder: (context) => PresetWorkout()),
+                );
+              },
+            ),
+            ListTile(
+              // Drawer option to add preset workout page
+              leading: Icon(
+                Icons.class_outlined,
+                color: Colors.black,
+                size: 20.0,
+              ),
+              title: const Text('View Preset Workouts'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewPresets(presetWorkouts: _preset_workouts)),
                 );
               },
             ),
@@ -232,16 +281,42 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: ExpansionTile(
                             //onTap: () => print('${value[index]}'),
                             title: Text('${value[index].title}'),
+                            subtitle: Text('${value[index].notes}'),
                             children: _createSets(value[index])));
                   },
                 );
               },
             ),
           ),
-          Container(
+
+          // ADD EXERCISE / ADD PRESET WORKOUT BUTTONS
+
+          Row (
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+            Container(
               child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
                   onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              AddExercise(focusedDay: _selectedDay.toString(), presets: saved_presets)
+                      ),
+                    );
+                    setState(() {});
+                  },
+                  child: Text("Add Exercise"))
+                ),
+              //SizedBox(width: 20.0),
+              Container(
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
+                  onPressed: () async { 
+                    await openDialog().then((_) => this.setState(() {}));
+                  },
+                  /*onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -249,13 +324,68 @@ class _MyHomePageState extends State<MyHomePage> {
                               AddExercise(focusedDay: _selectedDay.toString())),
                     );
                     setState(() {});
-                  },
-                  child: Text("Add exercise"))),
+                  },*/
+                  child: Text("Add Preset Workout"))
+              ),
+          ],),
           SizedBox(height: 20.0),
         ],
       ),
     );
   }
+
+Future openDialog() => showDialog<String>(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: const Text('Which preset workout would you like to add?'),
+      content: Container(
+        child: DropdownButtonFormField<String>(
+            value: selectedPreset,
+            hint: Text('Choose'),
+            onChanged: (String? newValue){
+              setState(() {
+                selectedPreset = newValue;
+              });
+            },
+            onSaved: (String? newValue){
+              setState(() {
+                selectedPreset = newValue;
+              });
+            },
+            items: saved_presets.map<DropdownMenuItem<String>>(
+                (newValue) => DropdownMenuItem(
+                  value: newValue,
+                  child: Text(newValue),
+                ),
+              ).toList(),
+            )
+          ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.pop(context, 'Cancel'),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+            _changeDates(_preset_workouts[selectedPreset]!, _selectedDay!);
+            for (Event ex in _preset_workouts[selectedPreset]!) {
+              addEvent(ex);
+            }
+            _events[_selectedDay]?.addAll(_preset_workouts[selectedPreset]!);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyHomePage(
+                      title: "Workout Calendar")),
+            );
+          },
+          child: const Text('OK'),
+        ),
+      ],
+    ),
+  );
+
+  
 }
 
 /*List<Event> _writeExcercise(String text) {
@@ -275,6 +405,14 @@ addEvent(Event event){
   workout_list.add(event);
 }
 
+addPreset(Event event, String name){
+  _preset_workouts[name]?.add(event);
+}
+
+deletePreset(String name) {
+  _preset_workouts[name]?.remove(name);
+}
+
 List<ExpansionTile> _createSets(Event value) {
   List<ExpansionTile> list = [];
   for (int i = 0; i < value.sets.length; i++) {
@@ -287,3 +425,38 @@ List<ExpansionTile> _createSets(Event value) {
   }
   return list;
 }
+
+createPreset(List<Event> exercises, String name) {
+    //LinkedHashMap<String, List<Event>> events =
+    //    LinkedHashMap<String, List<Event>>();
+    if (_preset_workouts.containsKey(name)) {
+      // TODO could add a warning here for if the preset already exists
+      _preset_workouts[name]?.addAll(exercises);
+    } else {
+      _preset_workouts[name] = exercises;
+    }
+    saved_presets.add(name);
+    /*for (Event exercise in exercises) {
+      //print(exercise.date);
+      events[name] = exercises;
+      if (events.containsKey(name)) {
+        //print("in if cur date");
+        events[name]?.add(exercise);
+      } else {
+        // print("in else");
+        List<Event> newList = [exercise];
+        events[name] = newList;
+      }
+    };*/
+    //print(events);
+    //return events;
+    //print(_preset_workouts);
+  }
+
+  _changeDates(List<Event> exercises, DateTime day) {
+    //print("we here");
+    for (Event value in exercises) {
+      value.date = day.toString();
+    }
+    //workout_list.addAll(exercises);
+  }

@@ -11,7 +11,7 @@ class Sets {
 
 class Event {
   // Workout.items({this.date, this.title, this.sets = const [], this.addToPreset = false, this.notes = ""});
-  final String date;
+  String date;
   final String title;
   final List<Sets> sets;
   final bool addToPreset;
@@ -57,7 +57,7 @@ class ExWorkouts {
         addToPreset: false,
         notes: "john said this was good for leg day"),
     Event(
-        title: "Plate thrsters",
+        title: "Plate thrusters",
         date: "2023-04-05 20:18:04Z",
         sets: set_list,
         addToPreset: false,
