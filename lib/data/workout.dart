@@ -2,7 +2,6 @@
 // To store data of a workout
 
 class Sets {
-  // Sets.items({this.reps = "", this.weight = "", this.notes = ""});
   final String reps;
   final String weight;
   final String notes;
@@ -10,7 +9,6 @@ class Sets {
 }
 
 class Event {
-  // Workout.items({this.date, this.title, this.sets = const [], this.addToPreset = false, this.notes = ""});
   String date;
   final String title;
   final List<Sets> sets;

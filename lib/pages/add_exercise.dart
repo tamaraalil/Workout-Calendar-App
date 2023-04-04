@@ -19,7 +19,7 @@ class _AddExerciseState extends State<AddExercise> {
   List<Sets> sets = [];
   String? selectedValue;
   bool isChecked = false;
-  
+
   final nameController = TextEditingController();
   final notesController = TextEditingController();
   final textController = TextEditingController();
@@ -146,7 +146,6 @@ class _AddExerciseState extends State<AddExercise> {
                           onChanged: (String? newValue){
                             setState(() {
                               selectedValue = newValue!;
-                              //addPreset(event, selectedValue!);
                             });
                           },
                           items: widget.presets.map<DropdownMenuItem<String>>(

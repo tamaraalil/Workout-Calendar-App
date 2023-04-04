@@ -77,23 +77,6 @@ class PresetWorkout extends StatelessWidget {
                 ],
               )
             ),
-            /*SizedBox(height: 8.0),
-            Container(
-              child: Row(
-                children: [
-                  Container(
-                    child: Text("Preset exercises: ")
-                  ),
-                  Container(
-                      child: DropdownButton<String>(
-                          value: selectedValue,
-                          onChanged: null,
-                          items: dropdownItems
-                      )
-                  ),
-                ],
-              )
-            ),*/
             SizedBox(height: 8.0),
               Container(child: Text("Excercise Sets")),
               SizedBox(height: 8.0),
@@ -149,18 +132,6 @@ class PresetWorkout extends StatelessWidget {
                   child: const Text("Add set"),
               )),
             SizedBox(height: 8.0),
-            /*Container(
-              child: Row(
-                children: [
-                  Text("Add to exercise presets "),
-                  Checkbox(
-                    onChanged: null,
-                    value: isChecked,
-                  )
-                ],
-              )
-            ),
-            SizedBox(height: 8.0),*/
             Container(
               child: TextFormField(
                 obscureText: false,
@@ -187,8 +158,6 @@ class PresetWorkout extends StatelessWidget {
                     addToPreset: false,
                     notes: notesController.text);
                 exercises.add(newEvent);
-                //print("printing sets");
-                //print(exercises[0].sets);
                 final snackBar = SnackBar(
                   content: const Text('Exercise Added!'),
                   action: SnackBarAction(
