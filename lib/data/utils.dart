@@ -1,17 +1,5 @@
 import 'package:flutter/services.dart';
 
-/*String jsonString = "";
-
-Future<String> readJson() async {
-  final String response = await rootBundle.loadString("assets/exercises.json");
-  return response; 
-}
-
-String text = readJson().then((String result) {
-  jsonString = result;
-}) as String;*/
-
-
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
 }

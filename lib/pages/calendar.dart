@@ -12,13 +12,11 @@ import 'dart:collection';
 // Group 10
 
 final List<Event> workout_list = ExWorkouts.workout_list;
-//inal List<Event> presetdummy = ExWorkouts.preset_workouts;
 Map<String, List<Event>> _preset_workouts = <String, List<Event>>{};
 List<String> saved_presets = <String>[];
 late Map<DateTime, List<Event>> _events;
 
 class MyHomePage extends StatefulWidget {
-  //const MyHomePage({super.key, required this.title});
   const MyHomePage({
     this.event,
     Key? key,
@@ -32,16 +30,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
-  //Map <DateTime, List<Event>> exercises;
   final List<Event> workout_list = ExWorkouts.workout_list;
   final List<Event> presetdummy = ExWorkouts.preset_workouts;
   String jsonString = "";
   bool initialStatus = false;
   Event? selectedValue;
   String? selectedPreset;
-  // Calendar Variables
-  //LinkedHashMap<DateTime, List<Event>> exercises = _getEventsForDay(_selectedDay);
 
+  // Calendar Variables
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff; // Can
@@ -50,22 +46,12 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
   late Map<DateTime, List<Event>> _events;
-  //late Map<String, List<Event>> _preset_workouts;
-  //Map<String, List<Event>> _preset_workouts = <String, List<Event>>{};
 
   // Calendar Functions
   @override
   void initState() {
-    //exercises = {};
     super.initState();
-    //key: uniqueKey();
     var eventList = createEvents(workout_list);
-    //var preset
-    /*_preset_workouts = LinkedHashMap(
-      equals: isSameDay,
-      hashCode: getHashCode,
-    );*/
-    //_preset_workouts = <String, List<Event>>{};
     _events = LinkedHashMap(
       equals: isSameDay,
       hashCode: getHashCode,
@@ -79,39 +65,16 @@ class _MyHomePageState extends State<MyHomePage> {
     LinkedHashMap<DateTime, List<Event>> events =
         LinkedHashMap<DateTime, List<Event>>();
     for (Event exercise in exercises) {
-      //print(exercise.date);
       DateTime currDate = DateTime.parse(exercise.date);
       if (events.containsKey(currDate)) {
-        //print("in if cur date");
         events[currDate]?.add(exercise);
       } else {
-        // print("in else");
         List<Event> newList = [exercise];
         events[currDate] = newList;
       }
     };
-    //print(events);
     return events;
   }
-
-  /*LinkedHashMap<DateTime, List<Event>> createPresets(List<Event> exercises) {
-    LinkedHashMap<String, List<Event>> events =
-        LinkedHashMap<String, List<Event>>();
-    for (Event exercise in exercises) {
-      //print(exercise.date);
-      DateTime currDate = DateTime.parse(exercise.date);
-      if (events.containsKey(currDate)) {
-        //print("in if cur date");
-        events[currDate]?.add(exercise);
-      } else {
-        // print("in else");
-        List<Event> newList = [exercise];
-        events[currDate] = newList;
-      }
-    };
-    //print(events);
-    return events;
-  }*/
 
   List<Event> _getEventsForDay(DateTime day) {
     return _events[day] ?? [];
@@ -194,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 size: 20.0,
               ),
               title: const Text('Calendar'),
-              onTap: () {}, // fix this???? mayhaps?
+              onTap: () {},
             ),
             ListTile(
               // Drawer option to add preset workout page
@@ -245,7 +208,6 @@ class _MyHomePageState extends State<MyHomePage> {
             eventLoader: _getEventsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
             calendarStyle: CalendarStyle(
-              // Use `CalendarStyle` to customize the UI
               outsideDaysVisible: false,
             ),
             onDaySelected: _onDaySelected,
@@ -279,7 +241,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           borderRadius: BorderRadius.circular(12.0),
                         ),
                         child: ExpansionTile(
-                            //onTap: () => print('${value[index]}'),
                             title: Text('${value[index].title}'),
                             subtitle: Text('${value[index].notes}'),
                             children: _createSets(value[index])));
@@ -309,22 +270,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   child: Text("Add Exercise"))
                 ),
-              //SizedBox(width: 20.0),
               Container(
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
                   onPressed: () async { 
                     await openDialog().then((_) => this.setState(() {}));
                   },
-                  /*onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              AddExercise(focusedDay: _selectedDay.toString())),
-                    );
-                    setState(() {});
-                  },*/
                   child: Text("Add Preset Workout"))
               ),
           ],),
@@ -367,11 +318,15 @@ Future openDialog() => showDialog<String>(
         ),
         TextButton(
           onPressed: () {
-            _changeDates(_preset_workouts[selectedPreset]!, _selectedDay!);
-            for (Event ex in _preset_workouts[selectedPreset]!) {
+            var toAdd = [];
+            var list = _preset_workouts[selectedPreset];
+            for (var e in list!) {
+              e.date = _selectedDay.toString();
+              toAdd.add(e);
+            }
+            for (Event ex in toAdd) {
               addEvent(ex);
             }
-            _events[_selectedDay]?.addAll(_preset_workouts[selectedPreset]!);
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -387,19 +342,6 @@ Future openDialog() => showDialog<String>(
 
   
 }
-
-/*List<Event> _writeExcercise(String text) {
-  print(text);
-  if(text.isNotEmpty) {
-    var exercises = jsonDecode(text)['exercises'] as List;
-    var exerciseObjs = exercises.map((i) => Event.fromJson(i)).toList();
-    print(exerciseObjs.toString());
-    return exerciseObjs;
-  } else {
-    print("problemo 2");
-    return List.empty();
-  }
-} */
 
 addEvent(Event event){
   workout_list.add(event);
@@ -427,8 +369,6 @@ List<ExpansionTile> _createSets(Event value) {
 }
 
 createPreset(List<Event> exercises, String name) {
-    //LinkedHashMap<String, List<Event>> events =
-    //    LinkedHashMap<String, List<Event>>();
     if (_preset_workouts.containsKey(name)) {
       // TODO could add a warning here for if the preset already exists
       _preset_workouts[name]?.addAll(exercises);
@@ -436,27 +376,10 @@ createPreset(List<Event> exercises, String name) {
       _preset_workouts[name] = exercises;
     }
     saved_presets.add(name);
-    /*for (Event exercise in exercises) {
-      //print(exercise.date);
-      events[name] = exercises;
-      if (events.containsKey(name)) {
-        //print("in if cur date");
-        events[name]?.add(exercise);
-      } else {
-        // print("in else");
-        List<Event> newList = [exercise];
-        events[name] = newList;
-      }
-    };*/
-    //print(events);
-    //return events;
-    //print(_preset_workouts);
   }
 
   _changeDates(List<Event> exercises, DateTime day) {
-    //print("we here");
     for (Event value in exercises) {
       value.date = day.toString();
     }
-    //workout_list.addAll(exercises);
   }
