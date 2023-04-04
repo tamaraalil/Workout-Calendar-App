@@ -8,13 +8,16 @@ import 'add_exercise.dart';
 import 'view_presets.dart';
 import 'dart:collection';
 
-// Workout Calendar App
+// Calendar Page
 // Group 10
 
+
+// Global variables
 final List<Event> workout_list = ExWorkouts.workout_list;
 Map<String, List<Event>> _preset_workouts = <String, List<Event>>{};
 List<String> saved_presets = <String>[];
 late Map<DateTime, List<Event>> _events;
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -31,7 +34,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   final List<Event> workout_list = ExWorkouts.workout_list;
-  final List<Event> presetdummy = ExWorkouts.preset_workouts;
   String jsonString = "";
   bool initialStatus = false;
   Event? selectedValue;
@@ -47,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime? _rangeEnd;
   late Map<DateTime, List<Event>> _events;
 
-  // Calendar Functions
+  // Initialize variables on startup
   @override
   void initState() {
     super.initState();
@@ -61,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
+  // Change workout_list to a map to put on calendar
   LinkedHashMap<DateTime, List<Event>> createEvents(List<Event> exercises) {
     LinkedHashMap<DateTime, List<Event>> events =
         LinkedHashMap<DateTime, List<Event>>();
@@ -76,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return events;
   }
 
+  // Functions for table calendar
   List<Event> _getEventsForDay(DateTime day) {
     return _events[day] ?? [];
   }
@@ -111,7 +115,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _rangeSelectionMode = RangeSelectionMode.toggledOn;
     });
 
-    // `start` or `end` could be null
     if (start != null && end != null) {
       _selectedEvents.value = _getEventsForRange(start, end);
     } else if (start != null) {
@@ -139,7 +142,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       image: const AssetImage("assets/gym.png"),
                       fit: BoxFit.cover,
                       colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.7), BlendMode.colorBurn))),
+                          Colors.black.withOpacity(0.7), BlendMode.colorBurn)
+                  )
+              ),
               child: const Text(
                 '\nFitter\nToday',
                 textAlign: TextAlign.center,
@@ -196,6 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         children: [
+          // Calendar Widget
           TableCalendar(
             firstDay: kFirstDay,
             lastDay: kLastDay,
@@ -223,6 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
               focusedDay = focusedDay;
             },
           ),
+          // List exercises on selected day under calendar
           const SizedBox(height: 8.0),
           Expanded(
             child: ValueListenableBuilder<List<Event>>(
@@ -251,11 +258,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
 
           // ADD EXERCISE / ADD PRESET WORKOUT BUTTONS
-
           Row (
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
             Container(
+              // Add Exercise button
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
                   onPressed: () {
@@ -271,6 +278,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text("Add Exercise"))
                 ),
               Container(
+              // Add preset workout button
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
                   onPressed: () async { 
@@ -285,6 +293,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+// Pop-up dialog box for add preset workout button
 Future openDialog() => showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
@@ -343,18 +352,22 @@ Future openDialog() => showDialog<String>(
   
 }
 
+// Add event to calendar
 addEvent(Event event){
   workout_list.add(event);
 }
 
+// Add individual exercise to a preset workout
 addPreset(Event event, String name){
   _preset_workouts[name]?.add(event);
 }
 
+// Delete preset workout from preset workout map
 deletePreset(String name) {
   _preset_workouts[name]?.remove(name);
 }
 
+// Creates a list of expansion tiles for each set in a given exercise
 List<ExpansionTile> _createSets(Event value) {
   List<ExpansionTile> list = [];
   for (int i = 0; i < value.sets.length; i++) {
@@ -368,18 +381,19 @@ List<ExpansionTile> _createSets(Event value) {
   return list;
 }
 
+// Adds a new preset workout to the preset workout list
 createPreset(List<Event> exercises, String name) {
     if (_preset_workouts.containsKey(name)) {
-      // TODO could add a warning here for if the preset already exists
       _preset_workouts[name]?.addAll(exercises);
     } else {
       _preset_workouts[name] = exercises;
     }
     saved_presets.add(name);
-  }
+}
 
-  _changeDates(List<Event> exercises, DateTime day) {
-    for (Event value in exercises) {
-      value.date = day.toString();
-    }
+// Change date on passed in excercise (used for adding preset workout to calendar)
+_changeDates(List<Event> exercises, DateTime day) {
+  for (Event value in exercises) {
+    value.date = day.toString();
   }
+}

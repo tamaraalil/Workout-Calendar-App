@@ -23,7 +23,7 @@ class _ViewPresetsState extends State<ViewPresets> {
         title: Text("Preset Workouts"),
         elevation: 0,
       ),
-      drawer: Drawer(
+      drawer: Drawer( 
         child: ListView(
           children: [
             DrawerHeader(
@@ -58,7 +58,7 @@ class _ViewPresetsState extends State<ViewPresets> {
                   MaterialPageRoute(
                       builder: (context) => MyHomePage(title: "Workout Calendar")),
                 );
-              }, // fix this???? mayhaps?
+              },
             ),
             ListTile(
               // Drawer option to add preset workout page
@@ -115,7 +115,7 @@ class _ViewPresetsState extends State<ViewPresets> {
   }
 }
 
-
+// Create new expansion tiles for each set in the given exercise 
 List<ExpansionTile> _createSets(Event value) {
   List<ExpansionTile> list = [];
   for (int i = 0; i < value.sets.length; i++) {
@@ -129,7 +129,9 @@ List<ExpansionTile> _createSets(Event value) {
   return list;
 }
 
+// Create new expansion tiles for each exercise passed in
 List<ExpansionTile> _createExercises(List<Event> exercises, BuildContext context, String key, Map<String, List<Event>> presetWorkouts) {
+  // Exercises
   List<ExpansionTile> list = [];
   for (Event exercise in exercises) {
     list.add(ExpansionTile(
@@ -139,9 +141,11 @@ List<ExpansionTile> _createExercises(List<Event> exercises, BuildContext context
     )
     );
   }
+  // Delete button
   list.add(ExpansionTile(
       title: ElevatedButton(
         style: ElevatedButton.styleFrom(backgroundColor: Colors.red, fixedSize: Size(1,1)),
+        // Show warning dialog
         onPressed: () => showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -153,6 +157,7 @@ List<ExpansionTile> _createExercises(List<Event> exercises, BuildContext context
               ),
               TextButton(
                 onPressed: () {
+                  // Delete preset workout when user clicks "Yes"
                   presetWorkouts.remove(key);
                   deletePreset(key);
                   ViewPresets(presetWorkouts: presetWorkouts);

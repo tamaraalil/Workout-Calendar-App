@@ -4,7 +4,7 @@ import '../data/workout.dart';
 import '../data/utils.dart';
 import 'calendar.dart';
 
-// Add Preset Workout Page
+// Add Exercise Page
 
 class AddExercise extends StatefulWidget {
   final String focusedDay;
@@ -35,19 +35,18 @@ class _AddExerciseState extends State<AddExercise> {
           title: const Text('Add Exercise'),
         ),
         body: SingleChildScrollView(
-          //reverse: true,
           padding: EdgeInsets.all(10),
           child: Column (
             children: [
               SizedBox(height: 20.0),
-              Container(
+              Container( // Title
                   child: Text(
                       'New Exercise for ' +
                           widget.focusedDay.replaceAll("00:00:00.000Z", ""),
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.bold))),
               SizedBox(height: 20.0),
-              Container(
+              Container( // Exercise Name textbox
                   child: Row(
                 children: [
                   Container(child: Text('Exercise name: ')),
@@ -64,10 +63,11 @@ class _AddExerciseState extends State<AddExercise> {
                 ],
               )),
               SizedBox(height: 16.0),
+              // Sets dropdown
               Container(child: Text("Excercise Sets")),
               SizedBox(height: 8.0),
               ExpansionTile(title: Text("Set info"), children: <Widget>[
-                TextFormField(
+                TextFormField( // Reps textbox
                   obscureText: false,
                   controller: repsController,
                   decoration: InputDecoration(
@@ -75,7 +75,7 @@ class _AddExerciseState extends State<AddExercise> {
                     labelText: '# reps',
                   ),
                 ),
-                TextFormField(
+                TextFormField( // Weights textbox
                   obscureText: false,
                   controller: weightController,
                   decoration: InputDecoration(
@@ -83,7 +83,7 @@ class _AddExerciseState extends State<AddExercise> {
                     labelText: '# weight',
                   ),
                 ),
-                TextFormField(
+                TextFormField( // Notes textbox
                   obscureText: false,
                   controller: setNoteController,
                   decoration: InputDecoration(
@@ -93,14 +93,17 @@ class _AddExerciseState extends State<AddExercise> {
                 ),
               ]),
               SizedBox(height: 8.0),
-              Container(
+              Container( // Add set button
                   child: ElevatedButton(
                 onPressed: () {
+                  // Create new instance of set and add it to exercise being made
                   Sets newset = Sets(
                       reps: repsController.text,
                       weight: weightController.text,
                       notes: setNoteController.text);
                   sets.add(newset);
+
+                  // Show snackbar to notify user of action
                   final snackBar = SnackBar(
                     content: const Text('Set Added!'),
                     action: SnackBarAction(
@@ -118,7 +121,7 @@ class _AddExerciseState extends State<AddExercise> {
                 child: const Text("Add set"),
               )),
               SizedBox(height: 8.0),
-              Container(
+              Container( // Preset add checkbox
                   child: Row(
                     children: [
                       Text("Add to exercise presets "),
@@ -134,8 +137,9 @@ class _AddExerciseState extends State<AddExercise> {
                   )
               ),
               SizedBox(height: 8.0),
-              if (isChecked) 
-                Container(
+              // Preset exercise dropdown
+              if (isChecked) // Only show if checkbox has been clicked
+                Container( 
                   child: Row(
                     children: [
                       Container(child: Text("Preset Exercises: ")),
@@ -161,7 +165,7 @@ class _AddExerciseState extends State<AddExercise> {
                 ),
               
               SizedBox(height: 8.0),
-              Container(
+              Container( // Additional notes text box
                 child: TextFormField(
                   obscureText: false,
                   controller: notesController,
@@ -172,27 +176,29 @@ class _AddExerciseState extends State<AddExercise> {
                 ),
               ),
               SizedBox(height: 20.0),
-              Container(
+              Container( // Add exercise button
                   child: ElevatedButton(
                       style:
                           ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
                       onPressed: () {
+                        // Collect input from user and add it to a new event instance
                         Event newExercise = Event(
                             title: nameController.text,
                             date: widget.focusedDay,
                             sets: sets,
                             addToPreset: isChecked,
                             notes: notesController.text);
-
+                        
+                        // Show snackbar to notify the user of the action
                         final snackBar = SnackBar(
                           content: const Text('Exercise Added!'),
                           action: SnackBarAction(
                             label: 'Added!',
-                            onPressed: () {
-                              // Some code to undo the change.
-                            },
+                            onPressed: () {},
                           ),
                         );
+                        
+                        // Add the event to the list of events on calendar
                         addEvent(newExercise);
                         
                         // If the "add to presets" is checked, add it to the preset map
@@ -202,6 +208,7 @@ class _AddExerciseState extends State<AddExercise> {
 
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
+                        // Return to calendar page
                         Navigator.push(
                           context,
                           MaterialPageRoute(

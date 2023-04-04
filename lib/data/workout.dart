@@ -1,6 +1,7 @@
 // Workout Class
 // To store data of a workout
 
+// Sets class - stores relevant information for a set in an exercise
 class Sets {
   final String reps;
   final String weight;
@@ -8,6 +9,7 @@ class Sets {
   Sets({required this.reps, required this.weight, required this.notes});
 }
 
+// Event class - stores relevant information for an exercise
 class Event {
   String date;
   final String title;
@@ -22,13 +24,13 @@ class Event {
       required this.notes});
 }
 
+// Pre-made example exercises
 class ExWorkouts {
   static List<Sets> set_list = <Sets>[
     Sets(reps: "5", weight: "10", notes: "hello"),
     Sets(reps: "15", weight: "5", notes: "hello2")
   ];
 
-  // Example exercises inputted by user
   static List<Event> workout_list = [
     Event(
         title: "Seated leg press",
