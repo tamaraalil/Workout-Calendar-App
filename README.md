@@ -1,6 +1,6 @@
 # Workout Calendar App
 
-CIS 4030 Group 10
+CIS 4030 Group 10 Project
 
-## Compile & Run:
+### Compile & Run:
 flutter run
